@@ -1,103 +1,139 @@
-import Image from "next/image";
+import React from 'react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-neutral-100 p-8">
+      <div className="max-w-4xl mx-auto space-y-12">
+        {/* Header */}
+        <div className="text-center space-y-6">
+          <h1 className="heading-1 text-neutral-1000">Sunset Bingo</h1>
+          <p className="body-1 text-neutral-600 max-w-2xl mx-auto">
+            A beautiful bingo game with a complete design system built from your Figma specifications.
+            Experience the power of consistent typography, colors, and effects.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Design System Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-primary-500">Typography</CardTitle>
+              <CardDescription>Cormorant Garamond & DM Sans</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="body-3 text-neutral-600">
+                Complete typography system with H1-H6 headings and B1-B4 body text scales.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-secondary-500">Colors</CardTitle>
+              <CardDescription>Complete Color Palette</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="body-3 text-neutral-600">
+                Primary, secondary, accent, neutral, and feedback colors with multiple shades.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-accent-500">Effects</CardTitle>
+              <CardDescription>Shadows & Elevation</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="body-3 text-neutral-600">
+                Elevation effects (E0-E4), sunken effects (E5-E8), and glow effects (E9).
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-success-500">Strokes</CardTitle>
+              <CardDescription>Border System</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="body-3 text-neutral-600">
+                Complete stroke system from 0px to 12px with consistent border widths.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Component Library CTA */}
+        <Card variant="elevated">
+          <CardHeader className="text-center">
+            <CardTitle>Component Library</CardTitle>
+            <CardDescription>
+              Explore our comprehensive collection of reusable UI components
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="body-2 text-neutral-600 mb-6">
+              All components are built using your design system and include buttons, cards, 
+              input fields, avatars, badges, and more. Each component follows your typography, 
+              color, and effects specifications.
+            </p>
+            <Link href="/components">
+              <Button size="lg">
+                <span>→</span>
+                View Component Library
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        {/* Quick Examples */}
+        <div className="space-y-6">
+          <h2 className="heading-2 text-neutral-1000 text-center">Quick Examples</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Ready to Use</CardTitle>
+                <CardDescription>Components are production-ready</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="body-2 text-neutral-600">
+                  All components are built with TypeScript, accessibility in mind, and follow 
+                  your exact design specifications.
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="primary" size="sm">Primary</Button>
+                  <Button variant="outline" size="sm">Outline</Button>
+                  <Button variant="ghost" size="sm">Ghost</Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Consistent Design</CardTitle>
+                <CardDescription>Follows your design system</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="body-2 text-neutral-600">
+                  Every component uses your typography scales, color palette, shadow effects, 
+                  and border system for perfect consistency.
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="success" size="sm">Success</Button>
+                  <Button variant="warning" size="sm">Warning</Button>
+                  <Button variant="destructive" size="sm">Error</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+
+export default Home
