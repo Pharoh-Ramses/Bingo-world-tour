@@ -1,0 +1,427 @@
+"use client"
+
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+
+interface GameSession {
+  id: string
+  code: string
+  status: 'WAITING' | 'STARTING' | 'ACTIVE' | 'PAUSED' | 'ENDED'
+  revealInterval: number
+  currentRevealIndex: number
+  maxReveals: number
+  playerCount: number
+  createdAt: string
+  startedAt?: string
+  endedAt?: string
+  players: Array<{
+    id: string
+    name: string
+    isReady: boolean
+  }>
+}
+
+interface RevealedLocation {
+  id: string
+  locationId: string
+  locationName: string
+  revealIndex: number
+  revealedAt: string
+}
+
+const SessionControlPanel = () => {
+  const params = useParams()
+  const router = useRouter()
+  const { user } = useUser()
+  const sessionId = params.sessionId as string
+
+  const [session, setSession] = useState<GameSession | null>(null)
+  const [revealedLocations, setRevealedLocations] = useState<RevealedLocation[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isStarting, setIsStarting] = useState(false)
+  const [isPausing, setIsPausing] = useState(false)
+  const [isEnding, setIsEnding] = useState(false)
+
+  useEffect(() => {
+    if (sessionId) {
+      fetchSessionData()
+    }
+  }, [sessionId])
+
+  const fetchSessionData = async () => {
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setSession(data.session)
+        setRevealedLocations(data.revealedLocations || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch session data:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleStartGame = async () => {
+    setIsStarting(true)
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}/start`, {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        await fetchSessionData()
+      }
+    } catch (error) {
+      console.error('Failed to start game:', error)
+    } finally {
+      setIsStarting(false)
+    }
+  }
+
+  const handlePauseGame = async () => {
+    setIsPausing(true)
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}/pause`, {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        await fetchSessionData()
+      }
+    } catch (error) {
+      console.error('Failed to pause game:', error)
+    } finally {
+      setIsPausing(false)
+    }
+  }
+
+  const handleResumeGame = async () => {
+    setIsPausing(true)
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}/resume`, {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        await fetchSessionData()
+      }
+    } catch (error) {
+      console.error('Failed to resume game:', error)
+    } finally {
+      setIsPausing(false)
+    }
+  }
+
+  const handleEndGame = async () => {
+    setIsEnding(true)
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}/end`, {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        await fetchSessionData()
+      }
+    } catch (error) {
+      console.error('Failed to end game:', error)
+    } finally {
+      setIsEnding(false)
+    }
+  }
+
+  const handleManualReveal = async () => {
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}/reveal`, {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        await fetchSessionData()
+      }
+    } catch (error) {
+      console.error('Failed to reveal location:', error)
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'WAITING': return 'bg-accent-sand text-tertiary-600'
+      case 'STARTING': return 'bg-warning text-white'
+      case 'ACTIVE': return 'bg-success text-white'
+      case 'PAUSED': return 'bg-warning text-white'
+      case 'ENDED': return 'bg-neutral-400 text-white'
+      default: return 'bg-neutral-300 text-tertiary-600'
+    }
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'WAITING': return 'Waiting for Players'
+      case 'STARTING': return 'Starting Soon'
+      case 'ACTIVE': return 'Game Active'
+      case 'PAUSED': return 'Game Paused'
+      case 'ENDED': return 'Game Ended'
+      default: return status
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-20 py-16">
+        <div className="text-center">
+          <p className="body-1 text-tertiary-300">Loading session...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!session) {
+    return (
+      <div className="max-w-7xl mx-auto px-20 py-16">
+        <div className="text-center">
+          <p className="body-1 text-tertiary-300">Session not found</p>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push('/admin')}
+            className="mt-4"
+          >
+            Back to Dashboard
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="heading-1 text-tertiary-500">
+              Session {session.code}
+            </h1>
+            <p className="body-1 text-tertiary-300 mt-2">
+              Manage your BINGO World Tour game session
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <Badge className={getStatusColor(session.status)}>
+              {getStatusText(session.status)}
+            </Badge>
+            <Button 
+              variant="outline" 
+              onClick={() => router.push('/admin')}
+            >
+              Back to Dashboard
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Session Info */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Game Controls */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="heading-3 text-tertiary-500">
+                  Game Controls
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {session.status === 'WAITING' && (
+                  <div className="flex gap-4">
+                    <Button 
+                      variant="primary" 
+                      onClick={handleStartGame}
+                      disabled={isStarting || session.playerCount === 0}
+                      className="flex-1"
+                    >
+                      {isStarting ? 'Starting...' : 'Start Game'}
+                    </Button>
+                  </div>
+                )}
+
+                {session.status === 'ACTIVE' && (
+                  <div className="flex gap-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={handlePauseGame}
+                      disabled={isPausing}
+                    >
+                      {isPausing ? 'Pausing...' : 'Pause Game'}
+                    </Button>
+                    <Button 
+                      variant="primary" 
+                      onClick={handleManualReveal}
+                      className="flex-1"
+                    >
+                      Reveal Next Location
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={handleEndGame}
+                      disabled={isEnding}
+                    >
+                      {isEnding ? 'Ending...' : 'End Game'}
+                    </Button>
+                  </div>
+                )}
+
+                {session.status === 'PAUSED' && (
+                  <div className="flex gap-4">
+                    <Button 
+                      variant="primary" 
+                      onClick={handleResumeGame}
+                      disabled={isPausing}
+                      className="flex-1"
+                    >
+                      {isPausing ? 'Resuming...' : 'Resume Game'}
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={handleEndGame}
+                      disabled={isEnding}
+                    >
+                      {isEnding ? 'Ending...' : 'End Game'}
+                    </Button>
+                  </div>
+                )}
+
+                {session.status === 'ENDED' && (
+                  <div className="flex gap-4">
+                    <Button 
+                      variant="primary" 
+                      onClick={() => router.push(`/game/${session.code}/results`)}
+                      className="flex-1"
+                    >
+                      View Results
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Revealed Locations */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="heading-3 text-tertiary-500">
+                  Revealed Locations ({revealedLocations.length})
+                </CardTitle>
+                <CardDescription>
+                  Locations that have been revealed during this game
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {revealedLocations.length === 0 ? (
+                  <p className="body-1 text-tertiary-300 text-center py-8">
+                    No locations revealed yet
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {revealedLocations.map((location) => (
+                      <div 
+                        key={location.id}
+                        className="p-3 bg-primary-100 rounded-lg border border-primary-300"
+                      >
+                        <p className="body-2 text-tertiary-600 font-medium">
+                          #{location.revealIndex}
+                        </p>
+                        <p className="body-3 text-tertiary-500">
+                          {location.locationName}
+                        </p>
+                        <p className="body-4 text-tertiary-400">
+                          {new Date(location.revealedAt).toLocaleTimeString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Session Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="heading-4 text-tertiary-500">
+                  Session Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div>
+                  <p className="body-3 text-tertiary-400">Session Code</p>
+                  <p className="body-2 text-tertiary-600 font-mono">
+                    {session.code}
+                  </p>
+                </div>
+                <div>
+                  <p className="body-3 text-tertiary-400">Reveal Interval</p>
+                  <p className="body-2 text-tertiary-600">
+                    {session.revealInterval} minutes
+                  </p>
+                </div>
+                <div>
+                  <p className="body-3 text-tertiary-400">Players</p>
+                  <p className="body-2 text-tertiary-600">
+                    {session.playerCount} joined
+                  </p>
+                </div>
+                <div>
+                  <p className="body-3 text-tertiary-400">Created</p>
+                  <p className="body-2 text-tertiary-600">
+                    {new Date(session.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Players List */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="heading-4 text-tertiary-500">
+                  Players ({session.players.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {session.players.length === 0 ? (
+                  <p className="body-2 text-tertiary-300 text-center py-4">
+                    No players joined yet
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {session.players.map((player) => (
+                      <div 
+                        key={player.id}
+                        className="flex items-center justify-between p-2 bg-neutral-50 rounded"
+                      >
+                        <span className="body-2 text-tertiary-600">
+                          {player.name}
+                        </span>
+                        <Badge 
+                          className={player.isReady ? 'bg-success text-white' : 'bg-accent-sand text-tertiary-600'}
+                        >
+                          {player.isReady ? 'Ready' : 'Setting up'}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default SessionControlPanel

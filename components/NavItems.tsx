@@ -6,8 +6,8 @@ const NavItems = () => {
   const pathname = usePathname()
 
   const navLinks = [
-    { href: '/destinations', label: 'Destinations' },
-    { href: '/packages', label: 'Packages' },
+    { href: '/join', label: 'Join Game' },
+    { href: '/admin', label: 'Host Game' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' }
   ]

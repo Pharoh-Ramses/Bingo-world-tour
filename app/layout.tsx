@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { ClerkProvider } from '@clerk/nextjs';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -17,9 +18,9 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Sunset Leisure Travel",
-  description: "Creating unforgettable travel experiences since 1995",
-  keywords: ["travel", "vacation", "destinations", "packages", "luxury travel"],
+  title: "BINGO World Tour with Sunset Leisure Travel",
+  description: "Join the ultimate travel-themed bingo experience! Play with destinations from around the world and win amazing prizes.",
+  keywords: ["bingo", "travel", "game", "destinations", "world tour", "convention", "prizes"],
 };
 
 export default function RootLayout({
@@ -28,6 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body
         className={`${cormorantGaramond.variable} ${dmSans.variable} antialiased bg-neutral-100`}
@@ -39,5 +41,6 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
+    </ClerkProvider>
   );
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import NavItems from './NavItems'
+import AuthButton from './AuthButton'
 
 const Header = () => {
   return (
@@ -44,10 +45,11 @@ const Header = () => {
             </span>
           </Link>
           
-          {/* Navigation */}
-          <div className="hidden sm:block">
-            <NavItems />
-          </div>
+              {/* Navigation */}
+              <div className="hidden sm:flex items-center gap-8">
+                <NavItems />
+                <AuthButton />
+              </div>
         </div>
       </div>
     </header>

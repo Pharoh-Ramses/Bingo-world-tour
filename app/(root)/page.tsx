@@ -9,9 +9,10 @@ const Home = () => {
       <div className="space-y-20">
         {/* Hero Section */}
         <div className="text-center space-y-8">
-          <h1 className="heading-1 text-tertiary-500">Travel Agency Component Library</h1>
+          <h1 className="heading-1 text-tertiary-500">BINGO World Tour</h1>
           <p className="body-1 text-tertiary-300 max-w-2xl mx-auto">
-            Core UI components for Sunset Leisure Travel
+            Join the ultimate travel-themed bingo experience with Sunset Leisure Travel! 
+            Play with destinations from around the world and win amazing prizes.
           </p>
         </div>
 
@@ -69,18 +70,22 @@ const Home = () => {
 
         {/* Call to Action */}
         <div className="text-center space-y-8">
-          <h2 className="heading-2 text-tertiary-500">Ready to Explore?</h2>
+          <h2 className="heading-2 text-tertiary-500">Ready to Play?</h2>
           <p className="body-1 text-tertiary-300 max-w-2xl mx-auto">
-            Discover our comprehensive collection of travel destinations and packages designed 
-            with your perfect getaway in mind.
+            Join a game session with a code from your convention host, or create your own 
+            session to host friends and family for an exciting travel-themed bingo experience.
           </p>
           <div className="flex gap-6 justify-center">
-            <Button variant="primary" className="px-8 py-3 rounded-lg h-12">
-              Explore Destinations
-            </Button>
-            <Button variant="outline" className="px-8 py-3 rounded-lg h-12">
-              View Packages
-            </Button>
+            <Link href="/join">
+              <Button variant="primary" className="px-8 py-3 rounded-lg h-12">
+                Join Game
+              </Button>
+            </Link>
+            <Link href="/admin">
+              <Button variant="outline" className="px-8 py-3 rounded-lg h-12">
+                Host Game
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
