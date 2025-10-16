@@ -6,8 +6,10 @@ const NavItems = () => {
   const pathname = usePathname()
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/components', label: 'Components' }
+    { href: '/destinations', label: 'Destinations' },
+    { href: '/packages', label: 'Packages' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' }
   ]
 
   return (
@@ -19,10 +21,10 @@ const NavItems = () => {
             key={link.href}
             href={link.href}
             className={`
-              body-2 font-medium transition-colors duration-200
+              body-1 text-tertiary-300 transition-colors duration-200
               ${isActive 
-                ? 'text-primary-500 underline underline-offset-4' 
-                : 'text-neutral-800 hover:text-primary-500'
+                ? 'text-tertiary-500 font-medium' 
+                : 'hover:text-tertiary-500'
               }
             `}
           >

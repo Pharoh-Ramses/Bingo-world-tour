@@ -8,22 +8,22 @@ import { ArrowRight, Download, Heart, Star, Menu, Search, Lock, Eye } from "luci
 
 export default function ComponentsPage() {
   return (
-    <div className="min-h-screen bg-neutral-100 p-8">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="space-y-20">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="heading-1 text-neutral-1000">Component Library</h1>
-          <p className="body-1 text-neutral-600 max-w-2xl mx-auto">
+        <div className="text-center space-y-8">
+          <h1 className="heading-1 text-tertiary-500">Component Library</h1>
+          <p className="body-1 text-tertiary-300 max-w-2xl mx-auto">
             A comprehensive collection of reusable UI components built with your design system.
             Each component follows the typography, color, and effects systems from your Figma design.
           </p>
         </div>
 
         {/* Buttons Section */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div>
-            <h2 className="heading-2 text-neutral-1000 mb-2">Buttons</h2>
-            <p className="body-2 text-neutral-600">Various button styles and sizes for different use cases.</p>
+            <h2 className="heading-2 text-tertiary-500 mb-4">Buttons</h2>
+            <p className="body-2 text-tertiary-300">Various button styles and sizes for different use cases.</p>
           </div>
           
           <Card>
@@ -72,10 +72,10 @@ export default function ComponentsPage() {
         </section>
 
         {/* Cards Section */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div>
-            <h2 className="heading-2 text-neutral-1000 mb-2">Cards</h2>
-            <p className="body-2 text-neutral-600">Flexible card components for displaying content.</p>
+            <h2 className="heading-2 text-tertiary-500 mb-4">Cards</h2>
+            <p className="body-2 text-tertiary-300">Flexible card components for displaying content.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -118,10 +118,10 @@ export default function ComponentsPage() {
         </section>
 
         {/* Input Fields Section */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div>
-            <h2 className="heading-2 text-neutral-1000 mb-2">Input Fields</h2>
-            <p className="body-2 text-neutral-600">Form input components with various types and states.</p>
+            <h2 className="heading-2 text-tertiary-500 mb-4">Input Fields</h2>
+            <p className="body-2 text-tertiary-300">Form input components with various types and states.</p>
           </div>
           
           <Card>
@@ -184,10 +184,10 @@ export default function ComponentsPage() {
         </section>
 
         {/* Avatars Section */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div>
-            <h2 className="heading-2 text-neutral-1000 mb-2">Avatars</h2>
-            <p className="body-2 text-neutral-600">User avatar components with status indicators.</p>
+            <h2 className="heading-2 text-tertiary-500 mb-4">Avatars</h2>
+            <p className="body-2 text-tertiary-300">User avatar components with status indicators.</p>
           </div>
           
           <Card>
@@ -234,10 +234,10 @@ export default function ComponentsPage() {
         </section>
 
         {/* Badges Section */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div>
-            <h2 className="heading-2 text-neutral-1000 mb-2">Badges & Tags</h2>
-            <p className="body-2 text-neutral-600">Badge and tag components for labels and status.</p>
+            <h2 className="heading-2 text-tertiary-500 mb-4">Badges & Tags</h2>
+            <p className="body-2 text-tertiary-300">Badge and tag components for labels and status.</p>
           </div>
           
           <Card>
@@ -285,7 +285,7 @@ export default function ComponentsPage() {
         </section>
 
         {/* Design System Info */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <Card variant="accent">
             <CardHeader>
               <CardTitle>Design System Integration</CardTitle>
@@ -294,20 +294,20 @@ export default function ComponentsPage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <h3 className="heading-6 text-neutral-800 mb-2">Typography</h3>
-                  <p className="body-3 text-neutral-600">
+                  <h3 className="heading-6 text-tertiary-500 mb-2">Typography</h3>
+                  <p className="body-3 text-tertiary-300">
                     Uses Cormorant Garamond for headings and DM Sans for body text with proper scales.
                   </p>
                 </div>
                 <div>
-                  <h3 className="heading-6 text-neutral-800 mb-2">Colors</h3>
-                  <p className="body-3 text-neutral-600">
+                  <h3 className="heading-6 text-tertiary-500 mb-2">Colors</h3>
+                  <p className="body-3 text-tertiary-300">
                     Implements your complete color palette with primary, secondary, accent, and feedback colors.
                   </p>
                 </div>
                 <div>
-                  <h3 className="heading-6 text-neutral-800 mb-2">Effects</h3>
-                  <p className="body-3 text-neutral-600">
+                  <h3 className="heading-6 text-tertiary-500 mb-2">Effects</h3>
+                  <p className="body-3 text-tertiary-300">
                     Uses your shadow system (E0-E9) and stroke system for consistent visual hierarchy.
                   </p>
                 </div>

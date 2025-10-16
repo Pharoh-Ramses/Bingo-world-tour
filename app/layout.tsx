@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const cormorantGaramond = Cormorant_Garamond({
@@ -15,8 +17,9 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Sunset Bingo",
-  description: "A beautiful bingo game with a chance to win luxury travel experiences",
+  title: "Sunset Leisure Travel",
+  description: "Creating unforgettable travel experiences since 1995",
+  keywords: ["travel", "vacation", "destinations", "packages", "luxury travel"],
 };
 
 export default function RootLayout({
@@ -27,9 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cormorantGaramond.variable} ${dmSans.variable} antialiased`}
+        className={`${cormorantGaramond.variable} ${dmSans.variable} antialiased bg-neutral-100`}
       >
-        {children}
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
