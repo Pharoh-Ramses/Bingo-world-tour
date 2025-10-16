@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
@@ -37,15 +37,7 @@ const BoardSetupPage = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (isLoaded && user && sessionCode) {
-      fetchSessionAndLocations()
-    } else if (isLoaded && !user) {
-      router.push('/sign-in')
-    }
-  }, [isLoaded, user, sessionCode, router])
-
-  const fetchSessionAndLocations = async () => {
+  const fetchSessionAndLocations = useCallback(async () => {
     try {
       // Fetch session status
       const sessionResponse = await fetch(`/api/game/${sessionCode}/status`)
@@ -68,7 +60,15 @@ const BoardSetupPage = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [sessionCode])
+
+  useEffect(() => {
+    if (isLoaded && user && sessionCode) {
+      fetchSessionAndLocations()
+    } else if (isLoaded && !user) {
+      router.push('/sign-in')
+    }
+  }, [isLoaded, user, sessionCode, router, fetchSessionAndLocations])
 
   const handleLocationSelect = (locationId: string) => {
     if (selectedLocations.includes(locationId)) {
@@ -126,7 +126,7 @@ const BoardSetupPage = () => {
 
       // Redirect to waiting room
       router.push(`/game/${sessionCode}/lobby`)
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
       setIsSaving(false)
     }
@@ -136,11 +136,6 @@ const BoardSetupPage = () => {
     return locations.find(loc => loc.id === id)
   }
 
-  const getPositionClass = (position: number) => {
-    const row = Math.floor(position / 5)
-    const col = position % 5
-    return `row-${row} col-${col}`
-  }
 
   if (!isLoaded || isLoading) {
     return (

@@ -9,13 +9,6 @@ import { Badge } from '@/components/ui/badge'
 import BingoBoard from '@/components/BingoBoard'
 import { hasBingo, findWinningPatterns, getTimeUntilNextReveal, formatTimeRemaining } from '@/lib/game-logic'
 
-interface Location {
-  id: string
-  name: string
-  description: string | null
-  imageUrl: string | null
-  category: string | null
-}
 
 interface GameSession {
   id: string
@@ -50,7 +43,6 @@ const ActiveGamePage = () => {
 
   const [session, setSession] = useState<GameSession | null>(null)
   const [playerBoard, setPlayerBoard] = useState<PlayerBoard | null>(null)
-  const [locations, setLocations] = useState<Location[]>([])
   const [revealedLocations, setRevealedLocations] = useState<RevealedLocation[]>([])
   const [selectedTiles, setSelectedTiles] = useState<boolean[]>(new Array(25).fill(false))
   const [winningPattern, setWinningPattern] = useState<string | null>(null)
@@ -59,13 +51,35 @@ const ActiveGamePage = () => {
   const [isSubmittingBingo, setIsSubmittingBingo] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (isLoaded && user && sessionCode) {
-      fetchGameData()
-    } else if (isLoaded && !user) {
-      router.push('/sign-in')
+  const fetchGameData = useCallback(async () => {
+    try {
+      // Fetch session status
+      const sessionResponse = await fetch(`/api/game/${sessionCode}/status`)
+      if (sessionResponse.ok) {
+        const sessionData = await sessionResponse.json()
+        setSession(sessionData)
+      }
+
+      // Fetch player board
+      const boardResponse = await fetch(`/api/game/${sessionCode}/board`)
+      if (boardResponse.ok) {
+        const boardData = await boardResponse.json()
+        setPlayerBoard(boardData)
+      }
+
+      // Fetch revealed locations
+      const revealedResponse = await fetch(`/api/game/${sessionCode}/revealed`)
+      if (revealedResponse.ok) {
+        const revealedData = await revealedResponse.json()
+        setRevealedLocations(revealedData)
+      }
+    } catch (error) {
+      console.error('Failed to fetch game data:', error)
+      setError('Failed to load game data')
+    } finally {
+      setIsLoading(false)
     }
-  }, [isLoaded, user, sessionCode, router, fetchGameData])
+  }, [sessionCode])
 
   useEffect(() => {
     // Check for BINGO after each tile selection
@@ -101,44 +115,14 @@ const ActiveGamePage = () => {
     }
   }, [session])
 
-  const fetchGameData = useCallback(async () => {
-    try {
-      // Fetch session status
-      const sessionResponse = await fetch(`/api/game/${sessionCode}/status`)
-      if (!sessionResponse.ok) {
-        setError('Session not found')
-        return
-      }
-      const sessionData = await sessionResponse.json()
-      setSession(sessionData)
 
-      // Fetch player's board
-      const boardResponse = await fetch(`/api/game/${sessionCode}/board`)
-      if (boardResponse.ok) {
-        const boardData = await boardResponse.json()
-        setPlayerBoard(boardData.board)
-      }
-
-      // Fetch all locations
-      const locationsResponse = await fetch('/api/locations')
-      if (locationsResponse.ok) {
-        const locationsData = await locationsResponse.json()
-        setLocations(locationsData.locations)
-      }
-
-      // Fetch revealed locations
-      const revealedResponse = await fetch(`/api/game/${sessionCode}/revealed`)
-      if (revealedResponse.ok) {
-        const revealedData = await revealedResponse.json()
-        setRevealedLocations(revealedData.revealedLocations)
-      }
-    } catch (error) {
-      console.error('Failed to fetch game data:', error)
-      setError('Failed to load game data')
-    } finally {
-      setIsLoading(false)
+  useEffect(() => {
+    if (isLoaded && user && sessionCode) {
+      fetchGameData()
+    } else if (isLoaded && !user) {
+      router.push('/sign-in')
     }
-  }, [sessionCode])
+  }, [isLoaded, user, sessionCode, router, fetchGameData])
 
   const handleTileClick = useCallback((position: number) => {
     if (position === 12) return // Center is always selected
@@ -251,7 +235,7 @@ const ActiveGamePage = () => {
                   revealedLocations={revealedLocations.map(r => r.locationId)}
                   selectedTiles={selectedTiles}
                   onTileClick={handleTileClick}
-                  locations={locations}
+                   locations={[]}
                   isGameActive={session.status === 'ACTIVE'}
                   winningPattern={winningPattern}
                 />

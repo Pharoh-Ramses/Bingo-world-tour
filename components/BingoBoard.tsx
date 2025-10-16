@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 
 interface Location {
@@ -126,10 +127,11 @@ const BingoBoard = ({
                 <div className="text-center w-full">
                   {state.location?.imageUrl ? (
                     <div className="relative w-full h-full">
-                      <img
+                      <Image
                         src={state.location.imageUrl}
                         alt={state.location.name}
-                        className="absolute inset-0 w-full h-full object-cover rounded"
+                        fill
+                        className="object-cover rounded"
                       />
                       <div className="absolute inset-0 bg-black/40 rounded flex items-center justify-center">
                         <p className="body-4 text-white font-medium text-center px-1">

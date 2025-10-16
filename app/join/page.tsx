@@ -48,7 +48,7 @@ const JoinGamePage = () => {
 
       // Redirect to board setup
       router.push(`/game/${sessionCode}/setup`)
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
       setIsLoading(false)
     }
@@ -95,7 +95,7 @@ const JoinGamePage = () => {
             
             <div className="mt-8 text-center">
               <p className="body-2 text-tertiary-300 mb-4">
-                Don't have a session code?
+                Don&apos;t have a session code?
               </p>
               <Button 
                 variant="outline" 

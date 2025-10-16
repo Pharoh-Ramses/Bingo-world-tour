@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { sessionCode: string } }
+  { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
     const { userId } = await auth()
@@ -16,7 +16,7 @@ export async function POST(
       )
     }
 
-    const { sessionCode } = params
+    const { sessionCode } = await params
     const { boardLayout } = await request.json()
 
     // Validate session code format
@@ -114,7 +114,7 @@ export async function POST(
         }
         return null
       })
-      .filter(Boolean)
+      .filter((item): item is NonNullable<typeof item> => item !== null)
 
     if (boardLocationData.length > 0) {
       await prisma.playerBoardLocation.createMany({

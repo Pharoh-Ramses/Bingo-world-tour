@@ -3,10 +3,10 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { sessionCode: string } }
+  { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
-    const { sessionCode } = params
+    const { sessionCode } = await params
 
     // Validate session code format
     if (!/^[A-Z0-9]{6}$/.test(sessionCode)) {

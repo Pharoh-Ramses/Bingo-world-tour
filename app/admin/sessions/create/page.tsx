@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { generateSessionCode } from '@/lib/game-logic'
 
 const CreateSessionPage = () => {
   const [revealInterval, setRevealInterval] = useState(5)
@@ -37,7 +36,7 @@ const CreateSessionPage = () => {
 
       const { session } = await response.json()
       router.push(`/admin/sessions/${session.id}`)
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
       setIsCreating(false)
     }

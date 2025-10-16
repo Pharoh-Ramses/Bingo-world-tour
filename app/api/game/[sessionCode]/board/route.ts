@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { sessionCode: string } }
+  { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
     const { userId } = await auth()
@@ -16,7 +16,7 @@ export async function GET(
       )
     }
 
-    const { sessionCode } = params
+    const { sessionCode } = await params
 
     // Find user in database
     const user = await prisma.user.findUnique({

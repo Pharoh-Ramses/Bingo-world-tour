@@ -5,7 +5,7 @@ import { hasBingo, findWinningPatterns } from '@/lib/game-logic'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { sessionCode: string } }
+  { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
     const { userId } = await auth()
@@ -17,7 +17,7 @@ export async function POST(
       )
     }
 
-    const { sessionCode } = params
+    const { sessionCode } = await params
     const { winningPattern, selectedTiles } = await request.json()
 
     // Find user in database
@@ -92,7 +92,14 @@ export async function POST(
     const revealedIds = revealedLocations.map(r => r.locationId)
 
     // Validate the BINGO
-    const revealedTiles = playerBoard.boardLayout.map(locationId => 
+    if (!playerBoard.boardLayout || !Array.isArray(playerBoard.boardLayout)) {
+      return NextResponse.json(
+        { error: 'Invalid board layout' },
+        { status: 400 }
+      )
+    }
+
+    const revealedTiles = (playerBoard.boardLayout as (string | null)[]).map(locationId => 
       locationId ? revealedIds.includes(locationId) : false
     )
 

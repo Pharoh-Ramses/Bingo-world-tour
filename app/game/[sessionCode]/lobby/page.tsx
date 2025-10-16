@@ -33,18 +33,6 @@ const LobbyPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [, setError] = useState('')
 
-  useEffect(() => {
-    if (isLoaded && user && sessionCode) {
-      fetchSessionData()
-      
-      // Poll for session updates
-      const interval = setInterval(fetchSessionData, 2000)
-      return () => clearInterval(interval)
-    } else if (isLoaded && !user) {
-      router.push('/sign-in')
-    }
-  }, [isLoaded, user, sessionCode, router, fetchSessionData])
-
   const fetchSessionData = useCallback(async () => {
     try {
       const response = await fetch(`/api/game/${sessionCode}/status`)
@@ -64,7 +52,19 @@ const LobbyPage = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [sessionCode])
+  }, [sessionCode, router])
+
+  useEffect(() => {
+    if (isLoaded && user && sessionCode) {
+      fetchSessionData()
+      
+      // Poll for session updates
+      const interval = setInterval(fetchSessionData, 2000)
+      return () => clearInterval(interval)
+    } else if (isLoaded && !user) {
+      router.push('/sign-in')
+    }
+  }, [isLoaded, user, sessionCode, router, fetchSessionData])
 
   const getStatusColor = (status: string) => {
     switch (status) {

@@ -36,14 +36,6 @@ const ResultsPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [, setError] = useState('')
 
-  useEffect(() => {
-    if (isLoaded && user && sessionCode) {
-      fetchResults()
-    } else if (isLoaded && !user) {
-      router.push('/sign-in')
-    }
-  }, [isLoaded, user, sessionCode, router, fetchResults])
-
   const fetchResults = useCallback(async () => {
     try {
       // Fetch session info
@@ -66,6 +58,14 @@ const ResultsPage = () => {
       setIsLoading(false)
     }
   }, [sessionCode])
+
+  useEffect(() => {
+    if (isLoaded && user && sessionCode) {
+      fetchResults()
+    } else if (isLoaded && !user) {
+      router.push('/sign-in')
+    }
+  }, [isLoaded, user, sessionCode, router, fetchResults])
 
   const getPlaceEmoji = (place: number) => {
     switch (place) {
@@ -256,7 +256,7 @@ const ResultsPage = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="heading-4 text-tertiary-500">
-                  What's Next?
+                  What&apos;s Next?
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">

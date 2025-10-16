@@ -3,10 +3,10 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { sessionCode: string } }
+  { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
-    const { sessionCode } = params
+    const { sessionCode } = await params
 
     // Find the session
     const session = await prisma.gameSession.findUnique({

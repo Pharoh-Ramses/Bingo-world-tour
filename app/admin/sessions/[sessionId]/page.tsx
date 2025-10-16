@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
@@ -36,7 +36,7 @@ interface RevealedLocation {
 const SessionControlPanel = () => {
   const params = useParams()
   const router = useRouter()
-  const { user } = useUser()
+  const { } = useUser()
   const sessionId = params.sessionId as string
 
   const [session, setSession] = useState<GameSession | null>(null)
@@ -46,13 +46,7 @@ const SessionControlPanel = () => {
   const [isPausing, setIsPausing] = useState(false)
   const [isEnding, setIsEnding] = useState(false)
 
-  useEffect(() => {
-    if (sessionId) {
-      fetchSessionData()
-    }
-  }, [sessionId])
-
-  const fetchSessionData = async () => {
+  const fetchSessionData = useCallback(async () => {
     try {
       const response = await fetch(`/api/admin/sessions/${sessionId}`)
       if (response.ok) {
@@ -65,7 +59,13 @@ const SessionControlPanel = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [sessionId])
+
+  useEffect(() => {
+    if (sessionId) {
+      fetchSessionData()
+    }
+  }, [sessionId, fetchSessionData])
 
   const handleStartGame = async () => {
     setIsStarting(true)

@@ -14,7 +14,7 @@ const inputVariants = cva(
         success: "border-success-500 focus:border-success-500 focus:ring-success-500/20",
         warning: "border-warning-500 focus:border-warning-500 focus:ring-warning-500/20",
       },
-      size: {
+      inputSize: {
         sm: "h-8 px-2 py-1 body-3",
         default: "h-9 px-3 py-2 body-2",
         lg: "h-10 px-4 py-3 body-1",
@@ -22,13 +22,13 @@ const inputVariants = cva(
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      inputSize: "default",
     },
   }
 )
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
   label?: string
   hint?: string
@@ -43,7 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ 
     className, 
     variant, 
-    size, 
+    inputSize, 
     label, 
     hint, 
     error, 
@@ -95,7 +95,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             type={inputType}
             className={cn(
-              inputVariants({ variant: inputVariant, size, className }),
+              inputVariants({ variant: inputVariant, inputSize, className }),
               getIcon() && "pl-10",
               showPasswordToggle && type === "password" && "pr-10"
             )}

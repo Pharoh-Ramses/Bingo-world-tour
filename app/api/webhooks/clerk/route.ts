@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma'
 export async function POST(request: NextRequest) {
   try {
     // Get the headers
-    const headerPayload = headers()
+    const headerPayload = await headers()
     const svix_id = headerPayload.get('svix-id')
     const svix_timestamp = headerPayload.get('svix-timestamp')
     const svix_signature = headerPayload.get('svix-signature')
@@ -20,11 +20,11 @@ export async function POST(request: NextRequest) {
 
     // Get the body
     const payload = await request.text()
-    const body = JSON.parse(payload)
 
     // Create a new Svix instance with your webhook secret
     const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET || '')
 
+    // Verify the payload with the headers
     let evt: {
       type: string
       data: {
@@ -35,13 +35,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Verify the payload with the headers
     try {
       evt = wh.verify(payload, {
         'svix-id': svix_id,
         'svix-timestamp': svix_timestamp,
         'svix-signature': svix_signature,
-      })
+      }) as typeof evt
     } catch (err) {
       console.error('Error verifying webhook:', err)
       return new Response('Error occured', {

@@ -18,7 +18,7 @@ export default function NotFound() {
             <h1 className="heading-1 text-primary-500">404</h1>
             <h2 className="heading-2 text-tertiary-500">Page Not Found</h2>
             <p className="body-1 text-tertiary-300 max-w-2xl mx-auto">
-              Oops! It looks like you've wandered off the beaten path. The page you're looking for 
+              Oops! It looks like you&apos;ve wandered off the beaten path. The page you&apos;re looking for 
               seems to have taken an unexpected detour on its journey.
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function NotFound() {
         {/* Helpful Message */}
         <div className="space-y-6">
           <p className="body-2 text-tertiary-300">
-            Don't worry, even the best travelers sometimes take a wrong turn. Let's get you back on track!
+            Don&apos;t worry, even the best travelers sometimes take a wrong turn. Let&apos;s get you back on track!
           </p>
           
           {/* Navigation Options */}
