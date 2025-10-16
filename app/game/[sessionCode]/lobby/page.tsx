@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
@@ -31,7 +31,7 @@ const LobbyPage = () => {
 
   const [session, setSession] = useState<GameSession | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [, setError] = useState('')
 
   useEffect(() => {
     if (isLoaded && user && sessionCode) {
@@ -43,9 +43,9 @@ const LobbyPage = () => {
     } else if (isLoaded && !user) {
       router.push('/sign-in')
     }
-  }, [isLoaded, user, sessionCode, router])
+  }, [isLoaded, user, sessionCode, router, fetchSessionData])
 
-  const fetchSessionData = async () => {
+  const fetchSessionData = useCallback(async () => {
     try {
       const response = await fetch(`/api/game/${sessionCode}/status`)
       if (response.ok) {
@@ -64,7 +64,7 @@ const LobbyPage = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [sessionCode])
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -236,7 +236,7 @@ const LobbyPage = () => {
                 </h2>
                 <p className="body-1 text-tertiary-300 max-w-2xl mx-auto">
                   The game host will start the session when everyone is ready. 
-                  You'll be automatically redirected to the game when it begins.
+                  You&apos;ll be automatically redirected to the game when it begins.
                 </p>
                 <div className="flex gap-4 justify-center mt-6">
                   <Button 

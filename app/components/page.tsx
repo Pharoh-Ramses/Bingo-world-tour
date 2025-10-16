@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarGroup } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Download, Heart, Star, Menu, Search, Lock, Eye } from "lucide-react"
+import { ArrowRight, Download, Heart, Star, Menu, Search } from "lucide-react"
 
 export default function ComponentsPage() {
   return (

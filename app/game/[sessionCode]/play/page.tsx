@@ -65,7 +65,7 @@ const ActiveGamePage = () => {
     } else if (isLoaded && !user) {
       router.push('/sign-in')
     }
-  }, [isLoaded, user, sessionCode, router])
+  }, [isLoaded, user, sessionCode, router, fetchGameData])
 
   useEffect(() => {
     // Check for BINGO after each tile selection
@@ -101,7 +101,7 @@ const ActiveGamePage = () => {
     }
   }, [session])
 
-  const fetchGameData = async () => {
+  const fetchGameData = useCallback(async () => {
     try {
       // Fetch session status
       const sessionResponse = await fetch(`/api/game/${sessionCode}/status`)
@@ -138,7 +138,7 @@ const ActiveGamePage = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [sessionCode])
 
   const handleTileClick = useCallback((position: number) => {
     if (position === 12) return // Center is always selected
@@ -184,7 +184,7 @@ const ActiveGamePage = () => {
         setError('Invalid BINGO - please check your board')
         setIsSubmittingBingo(false)
       }
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
       setIsSubmittingBingo(false)
     }

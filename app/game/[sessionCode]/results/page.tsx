@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
@@ -34,7 +34,7 @@ const ResultsPage = () => {
   const [session, setSession] = useState<GameSession | null>(null)
   const [winners, setWinners] = useState<Winner[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [, setError] = useState('')
 
   useEffect(() => {
     if (isLoaded && user && sessionCode) {
@@ -42,9 +42,9 @@ const ResultsPage = () => {
     } else if (isLoaded && !user) {
       router.push('/sign-in')
     }
-  }, [isLoaded, user, sessionCode, router])
+  }, [isLoaded, user, sessionCode, router, fetchResults])
 
-  const fetchResults = async () => {
+  const fetchResults = useCallback(async () => {
     try {
       // Fetch session info
       const sessionResponse = await fetch(`/api/game/${sessionCode}/status`)
@@ -65,7 +65,7 @@ const ResultsPage = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [sessionCode])
 
   const getPlaceEmoji = (place: number) => {
     switch (place) {
