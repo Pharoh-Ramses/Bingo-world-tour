@@ -114,20 +114,31 @@ const AdminDashboard = () => {
     <div className="max-w-7xl mx-auto px-20 py-16">
       <div className="space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="heading-1 text-tertiary-500">Admin Dashboard</h1>
-            <p className="body-1 text-tertiary-300 mt-2">
-              Manage your BINGO World Tour game sessions
-            </p>
-          </div>
-          <Button 
-            variant="primary" 
-            onClick={() => router.push('/admin/sessions/create')}
-            className="px-8 py-3"
-          >
-            Create New Session
-          </Button>
+        <div className="text-center">
+          <h1 className="heading-1 text-tertiary-500">Admin Dashboard</h1>
+          <p className="body-1 text-tertiary-300 mt-2">
+            Manage your BINGO World Tour game sessions and locations
+          </p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => router.push('/admin/locations')}>
+            <CardContent className="p-6 text-center">
+              <h3 className="heading-4 text-tertiary-500 mb-2">Manage Locations</h3>
+              <p className="body-3 text-tertiary-300">
+                View and edit all travel locations available for games
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => router.push('/admin/sessions/create')}>
+            <CardContent className="p-6 text-center">
+              <h3 className="heading-4 text-tertiary-500 mb-2">Create Session</h3>
+              <p className="body-3 text-tertiary-300">
+                Start a new BINGO World Tour game session
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Sessions List */}
