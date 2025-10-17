@@ -4,13 +4,13 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
-  "rounded-sm bg-neutral-100 text-neutral-1000 shadow-e1",
+  "rounded-sm bg-neutral-100 text-neutral-1000 shadow-e2",
   {
     variants: {
       variant: {
-        default: "bg-neutral-100 border-s border-neutral-200",
-        elevated: "bg-neutral-100 shadow-e2",
-        outlined: "bg-neutral-100 border-m border-neutral-300",
+        default: "bg-neutral-100 border border-accent-sand",
+        elevated: "bg-neutral-100 border border-accent-sand shadow-e3",
+        outlined: "bg-neutral-100 border border-accent-sand",
         filled: "bg-primary-100 border-s border-primary-200",
         accent: "bg-accent-100 border-s border-accent-200",
       },

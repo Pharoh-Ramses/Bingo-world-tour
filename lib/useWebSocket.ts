@@ -32,43 +32,50 @@ export function useWebSocket({
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const reconnectAttemptsRef = useRef(0)
   const isManualCloseRef = useRef(false)
+  const isConnectingRef = useRef(false)
 
   const getWebSocketUrl = useCallback(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const host = process.env.NODE_ENV === 'production' 
-      ? window.location.host 
-      : 'localhost:3001'
-    
+    const baseUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'ws://localhost:3001/ws'
     const params = new URLSearchParams({ sessionCode })
     if (userId) {
       params.append('userId', userId)
     }
-    
-    return `${protocol}//${host}/ws?${params.toString()}`
+
+    const url = `${baseUrl}?${params.toString()}`
+    console.log('WebSocket URL:', url) // Debug log
+    return url
   }, [sessionCode, userId])
 
   const connect = useCallback(() => {
-    if (wsRef.current?.readyState === WebSocket.OPEN) {
+    if (wsRef.current?.readyState === WebSocket.OPEN || isConnectingRef.current) {
+      console.log('WebSocket already connected or connecting, skipping connection attempt')
       return
     }
 
+    console.log('Attempting WebSocket connection...')
+    isConnectingRef.current = true
     setConnectionState('connecting')
     setError(null)
 
     try {
       const url = getWebSocketUrl()
+      console.log('Creating WebSocket with URL:', url)
       const ws = new WebSocket(url)
       wsRef.current = ws
 
       ws.onopen = () => {
+        console.log('WebSocket connection opened successfully')
+        isConnectingRef.current = false
         setConnectionState('connected')
         reconnectAttemptsRef.current = 0
         onConnect?.()
       }
 
       ws.onmessage = (event) => {
+        console.log('WebSocket message received:', event.data)
         try {
           const message: WSIncomingMessage = JSON.parse(event.data)
+          console.log('Parsed WebSocket message:', message)
           setLastMessage(message)
           onMessage?.(message)
         } catch (err) {
@@ -78,6 +85,8 @@ export function useWebSocket({
       }
 
       ws.onclose = (event) => {
+        console.log('WebSocket connection closed:', event.code, event.reason)
+        isConnectingRef.current = false
         setConnectionState('disconnected')
         onDisconnect?.()
 
@@ -93,12 +102,15 @@ export function useWebSocket({
       }
 
       ws.onerror = (event) => {
+        console.error('WebSocket error event:', event)
+        isConnectingRef.current = false
         setConnectionState('error')
         const errorMessage = 'WebSocket connection error'
         setError(errorMessage)
         onError?.(errorMessage)
       }
     } catch (err) {
+      isConnectingRef.current = false
       setConnectionState('error')
       setError('Failed to create WebSocket connection')
       onError?.('Failed to create WebSocket connection')
@@ -138,7 +150,7 @@ export function useWebSocket({
     return () => {
       disconnect()
     }
-  }, [sessionCode, connect, disconnect])
+  }, [sessionCode]) // Remove connect and disconnect from deps to prevent multiple connections
 
   // Cleanup on unmount
   useEffect(() => {

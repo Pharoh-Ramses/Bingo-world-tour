@@ -5,11 +5,11 @@ import { Eye, EyeOff, Search, Lock, Info } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const inputVariants = cva(
-  "flex w-full rounded-sm border-m border-neutral-300 bg-neutral-100 px-3 py-2 body-2 text-neutral-1000 placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all",
+  "flex w-full rounded-sm border-l border-neutral-400 bg-neutral-100 px-3 py-2 body-2 text-neutral-1000 placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-e1",
   {
     variants: {
       variant: {
-        default: "border-neutral-300 focus:border-primary-500",
+        default: "border-neutral-200 focus:border-primary-100",
         error: "border-error-500 focus:border-error-500 focus:ring-error-500/20",
         success: "border-success-500 focus:border-success-500 focus:ring-success-500/20",
         warning: "border-warning-500 focus:border-warning-500 focus:ring-warning-500/20",

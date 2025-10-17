@@ -5,18 +5,18 @@ import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-sm border-m px-2 py-1 body-3 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center gap-1 rounded-sm border px-2 py-1 body-3 font-medium focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "border-neutral-300 bg-neutral-100 text-neutral-800 hover:bg-neutral-200",
-        primary: "border-primary-200 bg-primary-100 text-primary-800 hover:bg-primary-200",
-        secondary: "border-secondary-200 bg-secondary-100 text-secondary-800 hover:bg-secondary-200",
-        accent: "border-accent-200 bg-accent-100 text-accent-800 hover:bg-accent-200",
-        success: "border-success-200 bg-success-100 text-success-800 hover:bg-success-200",
-        warning: "border-warning-200 bg-warning-100 text-warning-800 hover:bg-warning-200",
-        error: "border-error-200 bg-error-100 text-error-800 hover:bg-error-200",
-        outline: "border-neutral-300 bg-transparent text-neutral-800 hover:bg-neutral-100",
+        default: "border-neutral-300 bg-neutral-100 text-neutral-800",
+        primary: "border-primary-200 bg-primary-100 text-primary-800",
+        secondary: "border-secondary-200 bg-secondary-100 text-secondary-800",
+        accent: "border-accent-200 bg-accent-100 text-accent-800",
+        success: "border-success-200 bg-success-100 text-success-800",
+        warning: "border-warning-200 bg-warning-100 text-warning-800",
+        error: "border-error-200 bg-error-100 text-error-800",
+        outline: "border-neutral-300 bg-transparent text-neutral-800",
       },
       size: {
         sm: "px-1.5 py-0.5 body-4",

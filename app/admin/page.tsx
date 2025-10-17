@@ -24,6 +24,7 @@ const AdminDashboard = () => {
   const router = useRouter()
   const [sessions, setSessions] = useState<GameSession[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [endingSessionId, setEndingSessionId] = useState<string | null>(null)
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -49,13 +50,38 @@ const AdminDashboard = () => {
     }
   }
 
+  const handleEndSession = async (sessionId: string) => {
+    setEndingSessionId(sessionId)
+    try {
+      const response = await fetch(`/api/admin/sessions/${sessionId}/end`, {
+        method: 'POST'
+      })
+
+      if (response.ok) {
+        // Refresh the sessions list
+        await fetchSessions()
+      } else {
+        console.error('Failed to end session')
+      }
+    } catch (error) {
+      console.error('Error ending session:', error)
+    } finally {
+      setEndingSessionId(null)
+    }
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'WAITING': return 'bg-accent-sand text-tertiary-600'
-      case 'ACTIVE': return 'bg-success text-white'
-      case 'PAUSED': return 'bg-warning text-white'
-      case 'ENDED': return 'bg-neutral-400 text-white'
-      default: return 'bg-neutral-300 text-tertiary-600'
+      case 'WAITING':
+        return 'bg-accent-sand hover:bg-accent-sand text-tertiary-600 border border-accent-sand'
+      case 'ACTIVE':
+        return 'bg-success hover:bg-success text-neutral-100'
+      case 'PAUSED':
+        return 'bg-warning hover:bg-warning text-neutral-100'
+      case 'ENDED':
+        return 'bg-neutral-400 hover:bg-neutral-400 text-neutral-100'
+      default:
+        return 'bg-neutral-300 hover:bg-neutral-300 text-tertiary-600'
     }
   }
 
@@ -152,9 +178,22 @@ const AdminDashboard = () => {
                         </Badge>
                         
                         <div className="flex gap-2">
+                          {/* Cancel/End Session Button - for cancellable sessions */}
+                          {(session.status === 'WAITING' || session.status === 'ACTIVE' || session.status === 'PAUSED') && (
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleEndSession(session.id)}
+                              disabled={endingSessionId === session.id}
+                            >
+                              {endingSessionId === session.id ? 'Ending...' : session.status === 'WAITING' ? 'Cancel' : 'End'}
+                            </Button>
+                          )}
+
+                          {/* Primary Action Buttons */}
                           {session.status === 'WAITING' && (
-                            <Button 
-                              variant="outline" 
+                            <Button
+                              variant="outline"
                               size="sm"
                               onClick={() => router.push(`/admin/sessions/${session.id}`)}
                             >
@@ -162,17 +201,26 @@ const AdminDashboard = () => {
                             </Button>
                           )}
                           {session.status === 'ACTIVE' && (
-                            <Button 
-                              variant="primary" 
+                            <Button
+                              variant="primary"
                               size="sm"
                               onClick={() => router.push(`/admin/sessions/${session.id}`)}
                             >
                               Control Panel
                             </Button>
                           )}
+                          {session.status === 'PAUSED' && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => router.push(`/admin/sessions/${session.id}`)}
+                            >
+                              Manage
+                            </Button>
+                          )}
                           {session.status === 'ENDED' && (
-                            <Button 
-                              variant="outline" 
+                            <Button
+                              variant="secondary"
                               size="sm"
                               onClick={() => router.push(`/game/${session.code}/results`)}
                             >

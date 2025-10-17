@@ -8,6 +8,7 @@ A comprehensive guide to the design system extracted from Figma specifications, 
 - [Color System](#color-system)
 - [Effects System](#effects-system)
 - [Stroke System](#stroke-system)
+- [Radius System](#radius-system)
 - [Component Patterns](#component-patterns)
 - [Usage Guidelines](#usage-guidelines)
 - [AI Agent Integration](#ai-agent-integration)
@@ -283,6 +284,39 @@ Our stroke system provides consistent border widths:
   <Menu className="h-4 w-4" />
 </Button>
 ```
+
+## 🟦 Radius System
+
+Consistent corner rounding across components. Tokens map to utilities already available in `globals.css`.
+
+### Radius Scale
+
+| Token | Utility class | Value |
+|-------|----------------|-------|
+| xs    | `rounded-xs`   | 3px   |
+| sm    | `rounded-sm`   | 8px   |
+| md    | `rounded-md`   | 12px  |
+| lg    | `rounded-lg`   | 16px  |
+| xl    | `rounded-xl`   | 20px  |
+| 2xl   | `rounded-2xl`  | 24px  |
+
+### Usage
+
+```tsx
+// Cards (default)
+<Card className="rounded-md" />
+
+// Inputs
+<Input className="rounded-sm" />
+
+// Buttons
+<Button size="default" className="rounded-sm">Action</Button>
+
+// Badges/Chips
+<Badge className="rounded-sm">Game Ended</Badge>
+```
+
+Guideline: Prefer `rounded-sm` for inputs and buttons, `rounded-md` for cards/containers. Increase to `rounded-lg` on hero panels or elevated surfaces for emphasis.
 
 ### Card Patterns
 

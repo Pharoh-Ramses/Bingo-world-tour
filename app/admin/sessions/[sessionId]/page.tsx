@@ -258,13 +258,20 @@ const SessionControlPanel = () => {
               <CardContent className="space-y-4">
                 {session.status === 'WAITING' && (
                   <div className="flex gap-4">
-                    <Button 
-                      variant="primary" 
+                    <Button
+                      variant="primary"
                       onClick={handleStartGame}
                       disabled={isStarting || session.playerCount === 0}
                       className="flex-1"
                     >
                       {isStarting ? 'Starting...' : 'Start Game'}
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={handleEndGame}
+                      disabled={isEnding}
+                    >
+                      {isEnding ? 'Ending...' : 'Cancel Session'}
                     </Button>
                   </div>
                 )}
@@ -285,8 +292,8 @@ const SessionControlPanel = () => {
                     >
                       Reveal Next Location
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="destructive"
                       onClick={handleEndGame}
                       disabled={isEnding}
                     >
@@ -305,8 +312,8 @@ const SessionControlPanel = () => {
                     >
                       {isPausing ? 'Resuming...' : 'Resume Game'}
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="destructive"
                       onClick={handleEndGame}
                       disabled={isEnding}
                     >

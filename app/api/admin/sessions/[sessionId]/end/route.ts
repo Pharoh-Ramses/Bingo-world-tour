@@ -32,16 +32,16 @@ export async function POST(
 
     // Find the session and verify ownership
     const session = await prisma.gameSession.findFirst({
-      where: { 
+      where: {
         id: sessionId,
         createdById: user.id,
-        status: { in: ['ACTIVE', 'PAUSED'] }
+        status: { in: ['WAITING', 'ACTIVE', 'PAUSED'] }
       }
     })
 
     if (!session) {
       return NextResponse.json(
-        { error: 'Session not found or not active/paused' },
+        { error: 'Session not found or cannot be ended' },
         { status: 404 }
       )
     }

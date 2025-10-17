@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-primary-500 text-neutral-100 hover:bg-primary-600 shadow-e1",
-        secondary: "bg-secondary-500 text-neutral-100 hover:bg-secondary-600 shadow-e1",
-        accent: "bg-accent-500 text-neutral-100 hover:bg-accent-600 shadow-e1",
-        outline: "border-m border-primary-500 bg-neutral-100 text-primary-500 hover:bg-primary-100 shadow-e1",
+        primary: "bg-primary-500 text-neutral-100 hover:bg-primary-600 shadow-e2",
+        secondary: "bg-secondary-500 text-neutral-100 hover:bg-secondary-600 shadow-e2",
+        accent: "bg-accent-500 text-neutral-100 hover:bg-accent-600 shadow-e2",
+        outline: "border-l border-neutral-300 bg-neutral-100 text-neutral-900 hover:bg-neutral-100 shadow-e1",
         ghost: "text-primary-500 hover:bg-primary-100",
         link: "text-primary-500 underline-offset-4 hover:underline",
-        destructive: "bg-error-500 text-neutral-100 hover:bg-error-600 shadow-e1",
-        success: "bg-success-500 text-neutral-100 hover:bg-success-600 shadow-e1",
-        warning: "bg-warning-500 text-neutral-100 hover:bg-warning-600 shadow-e1",
+        destructive: "bg-error-500 text-neutral-100 hover:bg-error-600 shadow-e2",
+        success: "bg-success-500 text-neutral-100 hover:bg-success-600 shadow-e2",
+        warning: "bg-warning-500 text-neutral-100 hover:bg-warning-600 shadow-e2",
       },
       size: {
         sm: "h-8 rounded-xs gap-1.5 px-3 body-3 has-[>svg]:px-2.5",
