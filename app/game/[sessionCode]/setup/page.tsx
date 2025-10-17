@@ -139,7 +139,7 @@ const BoardSetupPage = () => {
 
   if (!isLoaded || isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Loading...</p>
         </div>
@@ -149,7 +149,7 @@ const BoardSetupPage = () => {
 
   if (!session) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Session not found</p>
           <Button 
@@ -165,7 +165,7 @@ const BoardSetupPage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -177,7 +177,7 @@ const BoardSetupPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Bingo Board */}
           <div className="lg:col-span-2">
             <Card>
@@ -190,12 +190,12 @@ const BoardSetupPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-5 gap-2 max-w-md mx-auto">
+                <div className="grid grid-cols-5 gap-1 sm:gap-2 max-w-md mx-auto">
                   {boardLayout.map((locationId, position) => (
                     <div
                       key={position}
                       className={`
-                        aspect-square border-2 rounded-lg flex items-center justify-center p-2 cursor-pointer transition-all
+                        aspect-square border-2 rounded-lg flex items-center justify-center p-1 sm:p-2 cursor-pointer transition-all
                         ${position === 12 
                           ? 'bg-primary-500 text-white border-primary-600' 
                           : locationId 
@@ -207,17 +207,17 @@ const BoardSetupPage = () => {
                     >
                       {position === 12 ? (
                         <div className="text-center">
-                          <p className="body-3 font-bold">FREE</p>
+                          <p className="body-4 sm:body-3 font-bold">FREE</p>
                         </div>
                       ) : locationId ? (
                         <div className="text-center">
-                          <p className="body-4 text-tertiary-600 font-medium">
+                          <p className="body-5 sm:body-4 text-tertiary-600 font-medium">
                             {getLocationById(locationId)?.name}
                           </p>
                         </div>
                       ) : (
                         <div className="text-center">
-                          <p className="body-4 text-tertiary-400">Empty</p>
+                          <p className="body-5 sm:body-4 text-tertiary-400">Empty</p>
                         </div>
                       )}
                     </div>

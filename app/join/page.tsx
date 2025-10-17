@@ -55,8 +55,8 @@ const JoinGamePage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
-      <div className="max-w-md mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
+      <div className="max-w-md mx-auto w-full">
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="heading-2 text-tertiary-500">

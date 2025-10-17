@@ -82,7 +82,7 @@ const BingoBoard = ({
 
   const getTileClasses = (position: number) => {
     const state = getTileState(position)
-    const baseClasses = "aspect-square border-2 rounded-lg flex items-center justify-center p-2 transition-all duration-300"
+    const baseClasses = "aspect-square border-2 rounded-lg flex items-center justify-center p-1 sm:p-2 transition-all duration-300"
     
     if (state.isWinning) {
       return `${baseClasses} bg-success text-white border-success-600 shadow-lg animate-pulse`
@@ -105,7 +105,7 @@ const BingoBoard = ({
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-5 gap-1 sm:gap-2">
         {boardLayout.map((locationId, position) => {
           const state = getTileState(position)
           
@@ -121,7 +121,7 @@ const BingoBoard = ({
             >
               {state.isCenter ? (
                 <div className="text-center">
-                  <p className="body-3 font-bold">FREE</p>
+                  <p className="body-4 sm:body-3 font-bold">FREE</p>
                 </div>
               ) : state.isRevealed ? (
                 <div className="text-center w-full">
@@ -134,7 +134,7 @@ const BingoBoard = ({
                         className="object-cover rounded"
                       />
                       <div className="absolute inset-0 bg-black/40 rounded flex items-center justify-center">
-                        <p className="body-4 text-white font-medium text-center px-1">
+                        <p className="body-5 sm:body-4 text-white font-medium text-center px-1">
                           {state.location.name}
                         </p>
                       </div>
@@ -150,7 +150,7 @@ const BingoBoard = ({
                     </div>
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center">
-                      <p className="body-4 text-tertiary-600 font-medium text-center">
+                      <p className="body-5 sm:body-4 text-tertiary-600 font-medium text-center">
                         {state.location?.name}
                       </p>
                       {state.location?.category && (
@@ -173,13 +173,13 @@ const BingoBoard = ({
               ) : (
                 <div className="text-center w-full">
                   <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="w-8 h-8 bg-tertiary-300 rounded-full flex items-center justify-center mb-2">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-tertiary-300 rounded-full flex items-center justify-center mb-1 sm:mb-2">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                         <circle cx="12" cy="10" r="3"/>
                       </svg>
                     </div>
-                    <p className="body-4 text-tertiary-500 font-medium text-center">
+                    <p className="body-5 sm:body-4 text-tertiary-500 font-medium text-center">
                       {state.location?.name || 'Hidden'}
                     </p>
                   </div>

@@ -119,7 +119,7 @@ const LobbyPage = () => {
 
   if (!isLoaded || isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Loading...</p>
         </div>
@@ -129,7 +129,7 @@ const LobbyPage = () => {
 
   if (!session) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Session not found</p>
           <Button 
@@ -145,7 +145,7 @@ const LobbyPage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
       <div className="max-w-4xl mx-auto">
         <div className="space-y-8">
           {/* Header */}
@@ -156,7 +156,7 @@ const LobbyPage = () => {
             <p className="body-1 text-tertiary-300 mt-2">
               Session {session.code} • Waiting for game to start
             </p>
-            <div className="flex items-center gap-4 mt-4">
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mt-4">
               <Badge className={getStatusColor(session.status)}>
                 {getStatusText(session.status)}
               </Badge>
@@ -172,7 +172,7 @@ const LobbyPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Session Info */}
             <Card>
               <CardHeader>
@@ -278,16 +278,18 @@ const LobbyPage = () => {
                   The game host will start the session when everyone is ready. 
                   You&apos;ll be automatically redirected to the game when it begins.
                 </p>
-                <div className="flex gap-4 justify-center mt-6">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
                   <Button 
                     variant="outline" 
                     onClick={() => router.push(`/game/${sessionCode}/setup`)}
+                    className="w-full sm:w-auto"
                   >
                     Edit My Board
                   </Button>
                   <Button 
                     variant="outline" 
                     onClick={() => router.push('/join')}
+                    className="w-full sm:w-auto"
                   >
                     Join Different Game
                   </Button>

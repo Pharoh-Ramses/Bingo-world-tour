@@ -61,8 +61,7 @@ const CreateLocationPage = () => {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
-      <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto p-6">
         <div className="mb-8">
           <h1 className="heading-1 text-tertiary-500">Create New Location</h1>
           <p className="body-1 text-tertiary-300 mt-2">
@@ -187,7 +186,6 @@ const CreateLocationPage = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
     </div>
   )
 }

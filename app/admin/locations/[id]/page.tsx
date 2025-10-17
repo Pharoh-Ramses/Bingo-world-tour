@@ -127,23 +127,19 @@ const EditLocationPage = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
-        <div className="text-center">
-          <p className="body-1 text-tertiary-300">Loading location...</p>
-        </div>
+      <div className="text-center p-6">
+        <p className="body-1 text-tertiary-300">Loading location...</p>
       </div>
     )
   }
 
   if (error && !name) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
-        <div className="text-center">
-          <p className="body-1 text-error mb-4">{error}</p>
-          <Button variant="outline" onClick={() => router.push('/admin/locations')}>
-            Back to Locations
-          </Button>
-        </div>
+      <div className="text-center p-6">
+        <p className="body-1 text-error mb-4">{error}</p>
+        <Button variant="outline" onClick={() => router.push('/admin/locations')}>
+          Back to Locations
+        </Button>
       </div>
     )
   }

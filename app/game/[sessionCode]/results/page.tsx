@@ -105,7 +105,7 @@ const ResultsPage = () => {
 
   if (!isLoaded || isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Loading results...</p>
         </div>
@@ -115,7 +115,7 @@ const ResultsPage = () => {
 
   if (!session) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Session not found</p>
           <Button 
@@ -131,7 +131,7 @@ const ResultsPage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -146,7 +146,7 @@ const ResultsPage = () => {
           </Badge>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Winners */}
           <div className="lg:col-span-2">
             <Card>
@@ -176,7 +176,7 @@ const ResultsPage = () => {
                     {winners.map((winner) => (
                       <div 
                         key={winner.id}
-                        className="flex items-center justify-between p-6 bg-neutral-50 rounded-lg border"
+                        className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 bg-neutral-50 rounded-lg border gap-4 sm:gap-0"
                       >
                         <div className="flex items-center gap-4">
                           <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getPlaceColor(winner.place)}`}>
@@ -193,7 +193,7 @@ const ResultsPage = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left sm:text-right">
                           <Badge className={getPlaceColor(winner.place)}>
                             {winner.place === 1 ? '1st Place' : 
                              winner.place === 2 ? '2nd Place' : 

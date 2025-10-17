@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import NavItems from './NavItems'
 import AuthButton from './AuthButton'
 
@@ -9,36 +10,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-[36px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-[30px] h-[30px] bg-primary-500 rounded flex items-center justify-center">
-              <svg 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                className="text-white"
-              >
-                <path 
-                  d="M12 2L2 7L12 12L22 7L12 2Z" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                />
-                <path 
-                  d="M2 17L12 22L22 17" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                />
-                <path 
-                  d="M2 12L12 17L22 12" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <div className="relative w-[30px] h-[30px]">
+              <Image
+                src="/assets/Logo.svg"
+                alt="Sunset Leisure Travel Logo"
+                fill
+                className="object-contain"
+              />
             </div>
             <span className="heading-5 text-tertiary-500">
               Sunset Leisure Travel

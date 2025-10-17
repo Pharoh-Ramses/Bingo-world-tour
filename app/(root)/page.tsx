@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -10,11 +11,14 @@ const Home = () => {
         {/* Hero Section */}
         <div className="text-center space-y-8">
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
+            <div className="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center p-0">
+              <Image
+                src="/assets/Logo.svg"
+                alt="Bingo World Tour Logo"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+              />
             </div>
             <h1 className="heading-1 text-tertiary-500">BINGO World Tour</h1>
           </div>

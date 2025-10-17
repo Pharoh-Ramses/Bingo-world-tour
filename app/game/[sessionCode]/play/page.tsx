@@ -249,7 +249,7 @@ const ActiveGamePage = () => {
 
   if (!isLoaded || isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Loading game...</p>
         </div>
@@ -259,7 +259,7 @@ const ActiveGamePage = () => {
 
   if (!session || !playerBoard) {
     return (
-      <div className="max-w-7xl mx-auto px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <p className="body-1 text-tertiary-300">Game not found</p>
           <Button 
@@ -275,7 +275,7 @@ const ActiveGamePage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-12 lg:py-16">
       <div className="space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -285,7 +285,7 @@ const ActiveGamePage = () => {
           <p className="body-1 text-tertiary-300 mt-2">
             Session {session.code} • {session.playerCount} players
           </p>
-          <div className="flex items-center gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mt-4">
             <Badge className={`${session.status === 'ACTIVE' ? 'bg-success text-white' : 'bg-warning text-white'}`}>
               {session.status === 'ACTIVE' ? 'Game Active' : 'Game Paused'}
             </Badge>
@@ -301,7 +301,7 @@ const ActiveGamePage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Game Board */}
           <div className="lg:col-span-3">
             <Card>

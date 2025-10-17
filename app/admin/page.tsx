@@ -6,6 +6,13 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { 
+  Gamepad2, 
+  MapPin, 
+  TrendingUp,
+  Users,
+  Clock
+} from 'lucide-react'
 
 interface GameSession {
   id: string
@@ -111,8 +118,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-20 py-16">
-      <div className="space-y-8">
+    <div className="space-y-8 p-6">
         {/* Header */}
         <div className="text-center">
           <h1 className="heading-1 text-tertiary-500">Admin Dashboard</h1>
@@ -122,20 +128,40 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => router.push('/admin/locations')}>
             <CardContent className="p-6 text-center">
+              <MapPin className="w-8 h-8 text-primary-500 mx-auto mb-3" />
               <h3 className="heading-4 text-tertiary-500 mb-2">Manage Locations</h3>
               <p className="body-3 text-tertiary-300">
-                View and edit all travel locations available for games
+                View and edit all travel locations
               </p>
             </CardContent>
           </Card>
           <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => router.push('/admin/sessions/create')}>
             <CardContent className="p-6 text-center">
+              <Gamepad2 className="w-8 h-8 text-primary-500 mx-auto mb-3" />
               <h3 className="heading-4 text-tertiary-500 mb-2">Create Session</h3>
               <p className="body-3 text-tertiary-300">
-                Start a new BINGO World Tour game session
+                Start a new game session
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="hover:shadow-md transition-shadow cursor-pointer opacity-75">
+            <CardContent className="p-6 text-center">
+              <Users className="w-8 h-8 text-tertiary-400 mx-auto mb-3" />
+              <h3 className="heading-4 text-tertiary-500 mb-2">View Players</h3>
+              <p className="body-3 text-tertiary-300">
+                Manage player accounts
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="hover:shadow-md transition-shadow cursor-pointer opacity-75">
+            <CardContent className="p-6 text-center">
+              <TrendingUp className="w-8 h-8 text-tertiary-400 mx-auto mb-3" />
+              <h3 className="heading-4 text-tertiary-500 mb-2">Analytics</h3>
+              <p className="body-3 text-tertiary-300">
+                View game statistics
               </p>
             </CardContent>
           </Card>
@@ -143,7 +169,17 @@ const AdminDashboard = () => {
 
         {/* Sessions List */}
         <div className="space-y-6">
-          <h2 className="heading-3 text-tertiary-500">Game Sessions</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="heading-3 text-tertiary-500">Recent Sessions</h2>
+            <Button 
+              variant="primary" 
+              onClick={() => router.push('/admin/sessions/create')}
+              size="sm"
+            >
+              <Gamepad2 className="w-4 h-4 mr-2" />
+              Create Session
+            </Button>
+          </div>
           
           {isLoading ? (
             <div className="text-center py-8">
@@ -174,12 +210,20 @@ const AdminDashboard = () => {
                           <h3 className="heading-4 text-tertiary-500">
                             Session {session.code}
                           </h3>
-                          <p className="body-2 text-tertiary-300">
-                            {session.playerCount} players • {session.revealInterval}min intervals
-                          </p>
-                          <p className="body-3 text-tertiary-300">
-                            Created {new Date(session.createdAt).toLocaleDateString()}
-                          </p>
+                          <div className="flex items-center gap-4 mt-1">
+                            <p className="body-2 text-tertiary-300">
+                              {session.playerCount} players
+                            </p>
+                            <p className="body-2 text-tertiary-300">
+                              {session.revealInterval}min intervals
+                            </p>
+                            <div className="flex items-center gap-1 text-tertiary-300">
+                              <Clock className="w-3 h-3" />
+                              <p className="body-3">
+                                {new Date(session.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       
@@ -247,7 +291,6 @@ const AdminDashboard = () => {
             </div>
           )}
         </div>
-      </div>
     </div>
   )
 }
