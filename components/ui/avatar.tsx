@@ -1,4 +1,5 @@
 import * as React from "react"
+import Image from "next/image"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
@@ -105,9 +106,10 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
         {...props}
       >
         {src && !imageError ? (
-          <img
+          <Image
             src={src}
-            alt={alt}
+            alt={alt || "Avatar"}
+            fill
             className={avatarImageVariants()}
             onError={() => setImageError(true)}
           />
