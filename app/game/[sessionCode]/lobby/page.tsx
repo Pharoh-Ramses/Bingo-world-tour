@@ -6,6 +6,8 @@ import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useWebSocket } from '@/lib/useWebSocket'
+import { WSIncomingMessage } from '@/lib/websocket-types'
 
 interface GameSession {
   id: string
@@ -54,13 +56,40 @@ const LobbyPage = () => {
     }
   }, [sessionCode, router])
 
+  // WebSocket message handler
+  const handleWebSocketMessage = useCallback((message: WSIncomingMessage) => {
+    switch (message.type) {
+      case 'connected':
+        setSession(prev => prev ? { ...prev, status: message.data.status } : null)
+        break
+        
+      case 'game-paused':
+        setSession(prev => prev ? { ...prev, status: 'PAUSED' } : null)
+        break
+        
+      case 'game-resumed':
+        setSession(prev => prev ? { ...prev, status: 'ACTIVE' } : null)
+        // Redirect to play page when game becomes active
+        router.push(`/game/${sessionCode}/play`)
+        break
+        
+      case 'game-ended':
+        setSession(prev => prev ? { ...prev, status: 'ENDED' } : null)
+        break
+    }
+  }, [router, sessionCode])
+
+  // WebSocket connection
+  const { connectionState } = useWebSocket({
+    sessionCode,
+    userId: user?.id,
+    onMessage: handleWebSocketMessage,
+    onError: (error) => console.error('WebSocket error:', error)
+  })
+
   useEffect(() => {
     if (isLoaded && user && sessionCode) {
       fetchSessionData()
-      
-      // Poll for session updates
-      const interval = setInterval(fetchSessionData, 2000)
-      return () => clearInterval(interval)
     } else if (isLoaded && !user) {
       router.push('/sign-in')
     }
@@ -127,9 +156,20 @@ const LobbyPage = () => {
             <p className="body-1 text-tertiary-300 mt-2">
               Session {session.code} • Waiting for game to start
             </p>
-            <Badge className={`mt-4 ${getStatusColor(session.status)}`}>
-              {getStatusText(session.status)}
-            </Badge>
+            <div className="flex items-center gap-4 mt-4">
+              <Badge className={getStatusColor(session.status)}>
+                {getStatusText(session.status)}
+              </Badge>
+              <Badge className={`${
+                connectionState === 'connected' ? 'bg-success text-white' : 
+                connectionState === 'connecting' ? 'bg-warning text-white' : 
+                'bg-error text-white'
+              }`}>
+                {connectionState === 'connected' ? 'Connected' : 
+                 connectionState === 'connecting' ? 'Connecting...' : 
+                 'Disconnected'}
+              </Badge>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

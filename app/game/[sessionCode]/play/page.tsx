@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import BingoBoard from '@/components/BingoBoard'
 import { hasBingo, findWinningPatterns, getTimeUntilNextReveal, formatTimeRemaining } from '@/lib/game-logic'
+import { useWebSocket } from '@/lib/useWebSocket'
+import { WSIncomingMessage, Location } from '@/lib/websocket-types'
 
 
 interface GameSession {
@@ -35,6 +37,14 @@ interface PlayerBoard {
   isReady: boolean
 }
 
+interface LocationData {
+  id: string
+  name: string
+  description: string | null
+  imageUrl: string | null
+  category: string | null
+}
+
 const ActiveGamePage = () => {
   const params = useParams()
   const router = useRouter()
@@ -44,6 +54,7 @@ const ActiveGamePage = () => {
   const [session, setSession] = useState<GameSession | null>(null)
   const [playerBoard, setPlayerBoard] = useState<PlayerBoard | null>(null)
   const [revealedLocations, setRevealedLocations] = useState<RevealedLocation[]>([])
+  const [allLocations, setAllLocations] = useState<LocationData[]>([])
   const [selectedTiles, setSelectedTiles] = useState<boolean[]>(new Array(25).fill(false))
   const [winningPattern, setWinningPattern] = useState<string | null>(null)
   const [timeUntilNextReveal, setTimeUntilNextReveal] = useState(0)
@@ -67,6 +78,13 @@ const ActiveGamePage = () => {
         setPlayerBoard(boardData)
       }
 
+      // Fetch all locations (hybrid approach)
+      const locationsResponse = await fetch('/api/locations')
+      if (locationsResponse.ok) {
+        const locationsData = await locationsResponse.json()
+        setAllLocations(locationsData.locations)
+      }
+
       // Fetch revealed locations
       const revealedResponse = await fetch(`/api/game/${sessionCode}/revealed`)
       if (revealedResponse.ok) {
@@ -80,6 +98,61 @@ const ActiveGamePage = () => {
       setIsLoading(false)
     }
   }, [sessionCode])
+
+  // WebSocket message handler
+  const handleWebSocketMessage = useCallback((message: WSIncomingMessage) => {
+    switch (message.type) {
+      case 'connected':
+        // Initialize revealed locations from server data
+        if (message.data.revealedLocations) {
+          setRevealedLocations(message.data.revealedLocations)
+        }
+        setSession(prev => prev ? { ...prev, status: message.data.status } : null)
+        break
+        
+      case 'location-revealed':
+        // Add new revealed location
+        const newRevealedLocation: RevealedLocation = {
+          id: `revealed-${Date.now()}`,
+          locationId: message.data.id,
+          locationName: message.data.name,
+          revealIndex: revealedLocations.length + 1,
+          revealedAt: new Date().toISOString()
+        }
+        setRevealedLocations(prev => [...prev, newRevealedLocation])
+        break
+        
+      case 'game-paused':
+        setSession(prev => prev ? { ...prev, status: 'PAUSED' } : null)
+        break
+        
+      case 'game-resumed':
+        setSession(prev => prev ? { ...prev, status: 'ACTIVE' } : null)
+        break
+        
+      case 'game-ended':
+        setSession(prev => prev ? { ...prev, status: 'ENDED' } : null)
+        router.push(`/game/${sessionCode}/results`)
+        break
+        
+      case 'winner-found':
+        // Show notification or handle winner announcement
+        console.log('Winner found:', message.data)
+        break
+        
+      case 'error':
+        setError(message.message)
+        break
+    }
+  }, [revealedLocations.length, router, sessionCode])
+
+  // WebSocket connection
+  const { connectionState, send } = useWebSocket({
+    sessionCode,
+    userId: user?.id,
+    onMessage: handleWebSocketMessage,
+    onError: (error) => setError(`WebSocket error: ${error}`)
+  })
 
   useEffect(() => {
     // Check for BINGO after each tile selection
@@ -212,9 +285,20 @@ const ActiveGamePage = () => {
           <p className="body-1 text-tertiary-300 mt-2">
             Session {session.code} • {session.playerCount} players
           </p>
-          <Badge className={`mt-4 ${session.status === 'ACTIVE' ? 'bg-success text-white' : 'bg-warning text-white'}`}>
-            {session.status === 'ACTIVE' ? 'Game Active' : 'Game Paused'}
-          </Badge>
+          <div className="flex items-center gap-4 mt-4">
+            <Badge className={`${session.status === 'ACTIVE' ? 'bg-success text-white' : 'bg-warning text-white'}`}>
+              {session.status === 'ACTIVE' ? 'Game Active' : 'Game Paused'}
+            </Badge>
+            <Badge className={`${
+              connectionState === 'connected' ? 'bg-success text-white' : 
+              connectionState === 'connecting' ? 'bg-warning text-white' : 
+              'bg-error text-white'
+            }`}>
+              {connectionState === 'connected' ? 'Connected' : 
+               connectionState === 'connecting' ? 'Connecting...' : 
+               'Disconnected'}
+            </Badge>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -235,7 +319,7 @@ const ActiveGamePage = () => {
                   revealedLocations={revealedLocations.map(r => r.locationId)}
                   selectedTiles={selectedTiles}
                   onTileClick={handleTileClick}
-                   locations={[]}
+                  locations={allLocations}
                   isGameActive={session.status === 'ACTIVE'}
                   winningPattern={winningPattern}
                 />

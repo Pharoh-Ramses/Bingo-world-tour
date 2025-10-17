@@ -6,6 +6,8 @@ import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useWebSocket } from '@/lib/useWebSocket'
+import { WSIncomingMessage } from '@/lib/websocket-types'
 
 interface GameSession {
   id: string
@@ -45,6 +47,7 @@ const SessionControlPanel = () => {
   const [isStarting, setIsStarting] = useState(false)
   const [isPausing, setIsPausing] = useState(false)
   const [isEnding, setIsEnding] = useState(false)
+  const [wsSessionCode, setWsSessionCode] = useState<string | null>(null)
 
   const fetchSessionData = useCallback(async () => {
     try {
@@ -53,6 +56,7 @@ const SessionControlPanel = () => {
         const data = await response.json()
         setSession(data.session)
         setRevealedLocations(data.revealedLocations || [])
+        setWsSessionCode(data.session.code)
       }
     } catch (error) {
       console.error('Failed to fetch session data:', error)
@@ -60,6 +64,54 @@ const SessionControlPanel = () => {
       setIsLoading(false)
     }
   }, [sessionId])
+
+  // WebSocket message handler
+  const handleWebSocketMessage = useCallback((message: WSIncomingMessage) => {
+    switch (message.type) {
+      case 'connected':
+        // Initialize revealed locations from server data
+        if (message.data.revealedLocations) {
+          setRevealedLocations(message.data.revealedLocations)
+        }
+        setSession(prev => prev ? { ...prev, status: message.data.status } : null)
+        break
+        
+      case 'location-revealed':
+        // Add new revealed location
+        const newRevealedLocation: RevealedLocation = {
+          id: `revealed-${Date.now()}`,
+          locationId: message.data.id,
+          locationName: message.data.name,
+          revealIndex: revealedLocations.length + 1,
+          revealedAt: new Date().toISOString()
+        }
+        setRevealedLocations(prev => [...prev, newRevealedLocation])
+        break
+        
+      case 'game-paused':
+        setSession(prev => prev ? { ...prev, status: 'PAUSED' } : null)
+        break
+        
+      case 'game-resumed':
+        setSession(prev => prev ? { ...prev, status: 'ACTIVE' } : null)
+        break
+        
+      case 'game-ended':
+        setSession(prev => prev ? { ...prev, status: 'ENDED' } : null)
+        break
+        
+      case 'winner-found':
+        console.log('Winner found:', message.data)
+        break
+    }
+  }, [revealedLocations.length])
+
+  // WebSocket connection
+  const { connectionState, send } = useWebSocket({
+    sessionCode: wsSessionCode || '',
+    onMessage: handleWebSocketMessage,
+    onError: (error) => console.error('WebSocket error:', error)
+  })
 
   useEffect(() => {
     if (sessionId) {
@@ -84,69 +136,29 @@ const SessionControlPanel = () => {
     }
   }
 
-  const handlePauseGame = async () => {
+  const handlePauseGame = () => {
     setIsPausing(true)
-    try {
-      const response = await fetch(`/api/admin/sessions/${sessionId}/pause`, {
-        method: 'POST'
-      })
-      
-      if (response.ok) {
-        await fetchSessionData()
-      }
-    } catch (error) {
-      console.error('Failed to pause game:', error)
-    } finally {
-      setIsPausing(false)
-    }
+    send({ type: 'pause' })
+    // Reset loading state after a short delay
+    setTimeout(() => setIsPausing(false), 1000)
   }
 
-  const handleResumeGame = async () => {
+  const handleResumeGame = () => {
     setIsPausing(true)
-    try {
-      const response = await fetch(`/api/admin/sessions/${sessionId}/resume`, {
-        method: 'POST'
-      })
-      
-      if (response.ok) {
-        await fetchSessionData()
-      }
-    } catch (error) {
-      console.error('Failed to resume game:', error)
-    } finally {
-      setIsPausing(false)
-    }
+    send({ type: 'resume' })
+    // Reset loading state after a short delay
+    setTimeout(() => setIsPausing(false), 1000)
   }
 
-  const handleEndGame = async () => {
+  const handleEndGame = () => {
     setIsEnding(true)
-    try {
-      const response = await fetch(`/api/admin/sessions/${sessionId}/end`, {
-        method: 'POST'
-      })
-      
-      if (response.ok) {
-        await fetchSessionData()
-      }
-    } catch (error) {
-      console.error('Failed to end game:', error)
-    } finally {
-      setIsEnding(false)
-    }
+    send({ type: 'end' })
+    // Reset loading state after a short delay
+    setTimeout(() => setIsEnding(false), 1000)
   }
 
-  const handleManualReveal = async () => {
-    try {
-      const response = await fetch(`/api/admin/sessions/${sessionId}/reveal`, {
-        method: 'POST'
-      })
-      
-      if (response.ok) {
-        await fetchSessionData()
-      }
-    } catch (error) {
-      console.error('Failed to reveal location:', error)
-    }
+  const handleManualReveal = () => {
+    send({ type: 'manual-reveal' })
   }
 
   const getStatusColor = (status: string) => {
@@ -214,6 +226,15 @@ const SessionControlPanel = () => {
           <div className="flex items-center gap-4">
             <Badge className={getStatusColor(session.status)}>
               {getStatusText(session.status)}
+            </Badge>
+            <Badge className={`${
+              connectionState === 'connected' ? 'bg-success text-white' : 
+              connectionState === 'connecting' ? 'bg-warning text-white' : 
+              'bg-error text-white'
+            }`}>
+              {connectionState === 'connected' ? 'Connected' : 
+               connectionState === 'connecting' ? 'Connecting...' : 
+               'Disconnected'}
             </Badge>
             <Button 
               variant="outline" 
