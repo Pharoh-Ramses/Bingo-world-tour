@@ -13,8 +13,8 @@ const Contact = () => {
 				<div className="text-center space-y-6">
 					<h1 className="heading-1 text-tertiary-500">Contact Us</h1>
 					<p className="body-1 text-tertiary-300 max-w-3xl mx-auto">
-						Have questions about BINGO World Tour? Want to bring our game to
-						your next event? We`&apos;`d love to hear from you!
+                    Have questions about BINGO World Tour? Want to bring our game to
+                    your next event? We&apos;d love to hear from you!
 					</p>
 				</div>
 
@@ -98,9 +98,9 @@ const Contact = () => {
 						<div className="space-y-6">
 							<h2 className="heading-2 text-tertiary-500">Get in Touch</h2>
 							<p className="body-1 text-tertiary-300">
-								Whether you're interested in hosting BINGO World Tour at your
-								event, have technical questions, or want to learn more about our
-								travel services, we're here to help.
+                                Whether you&apos;re interested in hosting BINGO World Tour at your
+                                event, have technical questions, or want to learn more about our
+                                travel services, we&apos;re here to help.
 							</p>
 						</div>
 

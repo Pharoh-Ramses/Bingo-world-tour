@@ -22,11 +22,11 @@ const About = () => {
               <p className="body-1 text-tertiary-300">
                 Founded in 1995, Sunset Leisure Travel began as a small travel agency with a big dream: 
                 to create extraordinary travel experiences that bring people together. Over the past 25+ years, 
-                we've grown into a trusted partner for conventions, corporate events, and group travel across the country.
+                we&apos;ve grown into a trusted partner for conventions, corporate events, and group travel across the country.
               </p>
               <p className="body-1 text-tertiary-300">
                 Our passion for travel extends beyond just booking trips. We believe in creating connections, 
-                fostering community, and making every event memorable. That's why we developed innovative 
+                fostering community, and making every event memorable. That&apos;s why we developed innovative 
                 entertainment solutions like BINGO World Tour to enhance convention experiences.
               </p>
               <p className="body-1 text-tertiary-300">
@@ -117,7 +117,7 @@ const About = () => {
             <div className="space-y-4">
               <h3 className="heading-4 text-tertiary-500">Excellence in Service</h3>
               <p className="body-1 text-tertiary-300">
-                We're committed to providing exceptional service and attention to detail in everything we do. 
+                We&apos;re committed to providing exceptional service and attention to detail in everything we do. 
                 From the initial consultation to the final farewell, we ensure every aspect of your travel 
                 experience exceeds expectations.
               </p>
@@ -125,14 +125,14 @@ const About = () => {
             <div className="space-y-4">
               <h3 className="heading-4 text-tertiary-500">Building Connections</h3>
               <p className="body-1 text-tertiary-300">
-                Travel is about more than just destinations—it's about the people you meet and the connections 
+                Travel is about more than just destinations—it&apos;s about the people you meet and the connections 
                 you make. We create experiences that bring people together and foster lasting relationships.
               </p>
             </div>
             <div className="space-y-4">
               <h3 className="heading-4 text-tertiary-500">Innovation & Creativity</h3>
               <p className="body-1 text-tertiary-300">
-                We're always looking for new ways to enhance the travel experience. From interactive games 
+                We&apos;re always looking for new ways to enhance the travel experience. From interactive games 
                 to cutting-edge event technology, we bring fresh ideas to every project.
               </p>
             </div>
