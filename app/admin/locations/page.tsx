@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -230,13 +231,16 @@ const LocationsPage = () => {
                     <div className="space-y-4">
                       {/* Location Image */}
                       {location.imageUrl && (
-                        <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
-                          <img
+                        <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                          <Image
                             src={location.imageUrl}
                             alt={location.name}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover"
+                            unoptimized
                             onError={(e) => {
-                              e.currentTarget.style.display = 'none'
+                              (e.currentTarget as HTMLImageElement).style.display = 'none'
                             }}
                           />
                         </div>
