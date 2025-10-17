@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Dropdown } from '@/components/ui/dropdown'
 
 const CreateLocationPage = () => {
   const [name, setName] = useState('')
@@ -91,43 +93,25 @@ const CreateLocationPage = () => {
                 />
               </div>
 
-              <div>
-                <label className="block body-2 text-tertiary-500 mb-2">
-                  Description
-                </label>
-                <p className="body-3 text-tertiary-300 mb-4">
-                  A brief description of the location (optional)
-                </p>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Describe what makes this location special..."
-                  className="w-full p-3 border border-neutral-300 rounded-lg bg-white body-2 min-h-[100px] resize-vertical"
-                  maxLength={500}
-                />
-                <p className="body-3 text-tertiary-300 mt-1">
-                  {description.length}/500 characters
-                </p>
-              </div>
+              <Textarea
+                label="Description"
+                hint="A brief description of the location (optional)"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe what makes this location special..."
+                maxLength={500}
+                showCharCount={true}
+              />
 
               <div>
-                <label className="block body-2 text-tertiary-500 mb-2">
-                  Category
-                </label>
-                <p className="body-3 text-tertiary-300 mb-4">
-                  Choose a category to help organize locations (optional)
-                </p>
-                <select
+                <Dropdown
+                  label="Category"
+                  hint="Choose a category to help organize locations (optional)"
                   value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full p-3 border border-neutral-300 rounded-lg bg-white body-2"
-                >
-                  {categories.map(cat => (
-                    <option key={cat.value} value={cat.value}>
-                      {cat.label}
-                    </option>
-                  ))}
-                </select>
+                  onValueChange={setCategory}
+                  options={categories}
+                  placeholder="Select a category (optional)"
+                />
               </div>
 
               <div>

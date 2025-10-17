@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { Dropdown } from '@/components/ui/dropdown'
 import { Search, Edit, Trash2, Plus } from 'lucide-react'
 
 interface Location {
@@ -179,17 +180,12 @@ const LocationsPage = () => {
                 />
               </div>
               <div className="sm:w-48">
-                <select
+                <Dropdown
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full p-3 border border-neutral-300 rounded-lg bg-white body-2"
-                >
-                  {categories.map(category => (
-                    <option key={category.value} value={category.value}>
-                      {category.label}
-                    </option>
-                  ))}
-                </select>
+                  onValueChange={setSelectedCategory}
+                  options={categories}
+                  placeholder="All Categories"
+                />
               </div>
             </div>
           </CardContent>

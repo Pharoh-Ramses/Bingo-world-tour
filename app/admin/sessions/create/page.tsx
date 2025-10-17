@@ -4,12 +4,20 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dropdown } from '@/components/ui/dropdown'
 
 const CreateSessionPage = () => {
   const [revealInterval, setRevealInterval] = useState(5)
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+
+  const revealIntervalOptions = [
+    { value: '2', label: '2 minutes - Fast paced' },
+    { value: '5', label: '5 minutes - Standard' },
+    { value: '10', label: '10 minutes - Relaxed' },
+    { value: '15', label: '15 minutes - Very relaxed' }
+  ]
 
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -70,17 +78,12 @@ const CreateSessionPage = () => {
                 <p className="body-3 text-tertiary-300 mb-4">
                   How often should new locations be revealed during the game?
                 </p>
-                <select
-                  value={revealInterval}
-                  onChange={(e) => setRevealInterval(Number(e.target.value))}
-                  className="w-full p-3 border border-neutral-300 rounded-lg bg-white"
+                <Dropdown
+                  value={revealInterval.toString()}
+                  onValueChange={(value) => setRevealInterval(Number(value))}
+                  options={revealIntervalOptions}
                   disabled={isCreating}
-                >
-                  <option value={2}>2 minutes - Fast paced</option>
-                  <option value={5}>5 minutes - Standard</option>
-                  <option value={10}>10 minutes - Relaxed</option>
-                  <option value={15}>15 minutes - Very relaxed</option>
-                </select>
+                />
               </div>
 
               {error && (
