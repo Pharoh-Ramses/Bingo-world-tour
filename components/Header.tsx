@@ -2,11 +2,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import NavItems from './NavItems'
 import AuthButton from './AuthButton'
+import MobileMenu from './MobileMenu'
 
 const Header = () => {
   return (
     <header className="bg-white border-b border-neutral-200 h-[85px]">
-      <div className="max-w-7xl mx-auto px-20 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 py-6">
         <div className="flex items-center justify-between h-[36px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
@@ -18,16 +19,19 @@ const Header = () => {
                 className="object-contain"
               />
             </div>
-            <span className="heading-5 text-tertiary-500">
+            <span className="heading-5 text-tertiary-500 hidden sm:block">
               Sunset Leisure Travel
             </span>
           </Link>
           
-              {/* Navigation */}
-              <div className="hidden sm:flex items-center gap-8">
-                <NavItems />
-                <AuthButton />
-              </div>
+          {/* Desktop Navigation */}
+          <div className="hidden sm:flex items-center gap-8">
+            <NavItems />
+            <AuthButton />
+          </div>
+
+          {/* Mobile Menu */}
+          <MobileMenu />
         </div>
       </div>
     </header>
